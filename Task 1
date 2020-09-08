@@ -1,0 +1,61 @@
+#include <iostream>
+#include <stdio.h>
+#include <string>
+using namespace std;
+
+int main()
+{
+    int input, Varian;
+    cout << "1. The first option" << endl;
+    cout << "2. The Second option" << endl;
+    cout << "3. The third option" << endl;
+    
+    cin  >> input;
+    
+    switch ( input )
+    {
+        case 1:
+            int NumList;
+            
+            cout << "Enter number of list" << endl;
+            cin >> NumList;
+            
+            cout << "Enter number variants" << endl;
+            cin >> Varian;
+            
+            cout << (NumList % Varian)+1;
+            break;
+            
+        
+        case 2:
+            char name;
+            
+            cout << "Enter number variants" << endl;
+            cin >> Varian;
+            
+            cout << "Enter number Name" << endl;
+            cin >> name;
+            
+            cout << (name%Varian)+1;
+            break;
+        
+        
+        case 3:
+            char Surname;
+            
+            cout << "Enter number variants" << endl;
+            cin >> Varian;
+            
+            cout << "Enter number Surname" << endl;
+            cin >> Surname;
+            
+            cout << (name%Varian)+1;
+            break;
+        
+        default:
+            cout << "Oshibka";
+        break;    
+    }
+    
+    return 0;
+}
