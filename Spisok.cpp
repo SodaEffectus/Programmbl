@@ -13,7 +13,7 @@ struct Node *p ;
 int n ;
 struct Node *To_Delete;
 void push_front() {
-    cout<<"Введите 0, чтобы остановить запись"<<endl;
+    cout<<"Enter 0 to stop zapic"<<endl;
     for (;;) {
      cin >> n;
 
@@ -30,7 +30,7 @@ void push_front() {
 void Show(){
     p = first;
     if (p==NULL){
-        cout<<"Список пуст"<<endl; 
+        cout<<"Empty"<<endl; 
     }
     else
     {
@@ -42,13 +42,25 @@ void Show(){
     }
 }
 
+void Empty()
+{
+    if (first==NULL){
+        cout<<"Empty!"<<endl;
+    }
+    else
+
+    {
+        cout << "Not Empty"<< endl;
+    }
+}
+
 void Delete() {
     if (first==NULL){
-      cout<<"Список пуст"<<endl;  
+      cout<<"Empty!"<<endl;  
     }
     else{
         if(first->next==NULL){
-            cout<<first->value<<" - этот элементк удален"<<endl;
+            cout<<first->value<<" - deleted"<<endl;
             first = NULL ;
         }
         else{
@@ -58,7 +70,7 @@ void Delete() {
         }
         To_Delete=p->next;
         p->next=To_Delete->next;
-        cout<<To_Delete->value<<" - этот элементк удален"<<endl;
+        cout<<To_Delete->value<<" - Deleted"<<endl;
         delete To_Delete;
     }
     }
@@ -75,7 +87,7 @@ int main(){
 	True = 1;
 	while (True) {
 
-		cout << "Enter:  1 - to push front" << endl << "2 - to show list" << endl << "3 - to delete last element" << endl << "4 - to die" << endl;
+		cout << "Enter:  1 - to push front" << endl << "2 - to show list" << endl << "3 - to delete last element" << endl<< "4 - check to Empty" << endl << "5 - to quit" << endl;
 		cin >> answer;
 		switch (answer)
 		{
@@ -90,7 +102,13 @@ int main(){
 		case 3:
 		Delete();
 			continue;
-		case 4:
+		
+        case 4:
+		Empty();
+			continue;
+        
+        
+        case 5:
 		True=0;
 			break;
 		}
