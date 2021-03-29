@@ -1,0 +1,461 @@
+#include <iostream>
+#include <cmath>
+#include <SFML/Graphics.hpp>
+#include <ctime>
+#include <chrono>
+#include <thread>
+
+
+using namespace sf;
+using namespace std;
+
+
+class Bear
+{
+
+public:
+
+	void setHeight()
+	{
+		cout << "Set height: ";
+		cin >> height;
+	}
+
+	void setBearMass()
+	{
+		cout << "Enter bear mass: ";
+		cin >> mass;
+	}
+
+	void EatHoney()
+	{
+		mass = mass + 0.5;
+		cout << endl << "Bear is eating honey...." << endl;
+	}
+
+	double getBearMass()
+	{
+		return mass;
+	}
+
+
+private:
+
+	double mass;
+	double height;
+
+};
+
+
+class Controller {
+
+public:
+
+	double getCurrentHight()
+	{
+		return currentHeight;
+	};
+
+	double powerCalculation() // расчет мощности двигателя
+	{
+
+	};
+
+	void setMass(double incomingMass)
+	{
+
+		mass = mass + incomingMass;
+
+	};
+
+private:
+
+	double settedHeight;
+	double currentHeight = 0;
+	double a = 0;
+	double velocity = 0;
+	double mass;
+
+
+};
+
+
+class Engine
+{
+
+public:
+
+	void calculateForce()
+	{
+
+	};
+
+	void getPower()
+	{
+
+	};
+
+
+private:
+
+	double engineForce;
+};
+
+
+class PIDImpl
+{
+public:
+	// Kp - proportional gain
+	// Ki - Integral gain
+	// Kd - derivative gain
+	// dt - loop interval time
+	// max - maximum value of manipulated variable
+	// min - minimum value of manipulated variable
+	PIDImpl(double dt, double max, double min, double Kp, double Kd, double Ki);
+	~PIDImpl();
+	// Returns the manipulated variable given a setpoint and current process value
+	double calculate(double setpoint, double currHight);
+
+private:
+	double _dt;
+	double _max;
+	double _min;
+	double _Kp;
+	double _Kd;
+	double _Ki;
+	double _pre_error;
+	double _integral;
+};
+
+
+/**
+* Implementation
+*/
+PIDImpl::PIDImpl(double dt, double max, double min, double Kp, double Kd, double Ki) :
+	_dt(dt),   // длительность работы модели 
+	_max(max),
+	_min(min),
+	_Kp(Kp),
+	_Kd(Kd),
+	_Ki(Ki),
+	_pre_error(0),
+	_integral(0)
+{
+}
+
+
+double PIDImpl::calculate(double setpoint, double currHight) {
+
+	// Calculate error
+	double error = setpoint - currHight;
+
+	// Proportional term
+	double Pout = _Kp * error;
+
+	// Integral term
+	_integral += error * _dt;
+	double Iout = _Ki * _integral;
+
+	// Derivative term
+	double derivative = (error - _pre_error) / _dt;
+	double Dout = _Kd * derivative;
+
+	// Calculate total output
+	double output = Pout + Iout + Dout;
+
+	//cout << "out= " << output << "\t" << "Pout = " << Pout << " " << Iout << " " << Dout << std::endl;
+	// Restrict to max/min
+	if (output > _max)
+		output = _max;
+	else if (output < _min)
+		output = _min;
+
+	//cout << "outB= " << output << std::endl;
+
+	// Save error to previous error
+	_pre_error = error;
+
+	return output;
+}
+
+PIDImpl::~PIDImpl()
+{
+}
+
+
+enum ECmd {
+	ENone,
+	EExit
+};
+
+int counter = 0;
+
+ECmd getCmd() {
+	counter++;
+	if (counter >= 2000) {
+		return EExit;
+	}
+	else
+		return ENone;
+}
+
+float getHZadFromUser() {  // задание необходимой высоты от пользователя 
+	return 50.;
+}
+
+void OtrisovPooh (int PoohNum){
+	
+	for (int poohcount = 0; poohcount < Poohnum; poohcount ++){
+		
+		CircleShape circle(30.f);
+		circle.setFillColor(Color(209, 95, 238));
+		circle.setOutlineThickness(5.f); // Устанавливаем толщину контура круга
+		circle.setOutlineColor(Color(255, 182, 193)); // Устанавливаем цвет контура
+	}
+		
+}
+
+void DrawTree (int TreeNum){
+	for (int poohcount = 0; poohcount < Poohnum; poohcount ++){
+		
+		RectangleShape tree(Vector2f(100.f, 750.f));  // дерево
+		tree.move(450, 130);
+		tree.setFillColor(Color(85, 25, 30));
+		window.draw(tree);
+
+		CircleShape duplo(20.f);		
+		duplo.setFillColor(Color(50, 12, 0));
+		duplo.setOutlineThickness(2.f); // Устанавливаем толщину контура круга
+		duplo.setOutlineColor(Color(140, 82, 77)); // Устанавливаем цвет контура
+		duplo.move(460, 300);
+		window.draw(duplo);
+
+
+		CircleShape leafs(90.f);
+		leafs.setFillColor(Color(59, 122, 50));
+		leafs.setOutlineThickness(2.f); // Устанавливаем толщину контура круга
+		leafs.setOutlineColor(Color(50, 112, 50)); // Устанавливаем цвет контура
+		leafs.move(410, 70);
+		window.draw(leafs);
+	}
+	
+	void OtrisovGND(){
+		RectangleShape ground(Vector2f(800.f, 110.f));  // gnd
+		ground.move(0, 850);
+		ground.setFillColor(Color(59, 115, 52));
+		window.draw(ground);
+	}
+	
+	void OtrisovTXT(){
+		RectangleShape textSpace1(Vector2f(280.f, 100.f));  // прямогугольник для текста
+		textSpace1.move(0, 800);
+		textSpace1.setFillColor(Color(128, 128, 128));
+		window.draw(textSpace1);
+	}
+}
+
+int main()
+{
+	// Объект, который, собственно, является главным окном приложения
+	RenderWindow window(VideoMode(800, 900), "Pooh is flying", Style::Close);
+	Font font;		// выбор стиля шрифта и указание его алреса
+	font.loadFromFile("C:/Windows/Fonts/calibri.ttf");
+
+
+
+	int x = 370;		// начальные координаты пуха
+	int y = 800;
+
+
+	srand(time(NULL));
+	
+
+	//pid -->
+
+	bool check = 0;
+
+
+	Bear Pooh;		// создание объекта класса медведь
+
+	Pooh.setHeight();
+
+	Pooh.setBearMass();
+
+	PIDImpl pid(0.5, 100, -100, 1.0, 0.001, 0.008);
+	//(double dt, double max, double min, double Kp, double Kd, double Ki) :
+
+	float t = 0; // Время моделирования
+	float enginePower = 0; // n 0..500 n
+	float enginePowerPercent = 0; // 0..100
+	float deltaEnginePowerPercent = 0;
+	float v = 0; // m/s
+	float dt = 0.1; // s
+	float a = 0; // m/s2
+	float m = Pooh.getBearMass(); // kg
+	float h = 0; // Текущая высота
+	float dh = 0; // Измененение высоты за шаг моделирования
+
+	float hZad = 0; // Измененение высоты за шаг моделирования
+
+	float duplo_h = getHZadFromUser(); // высота дупла
+
+
+	string strH; // строка для вывода текста высоты 
+
+
+	float h0 = 0;
+	float v0 = 0;
+
+
+	ECmd cmd = ENone;
+
+
+
+	// Главный цикл приложения. Выполняется, пока открыто окно
+	while (window.isOpen())
+	{
+
+		Text txtH; // задаем тексты
+
+		
+
+		// Обрабатываем очередь событий в цикле
+		Event event;
+		while (window.pollEvent(event))
+		{
+			// Пользователь нажал на «крестик» и хочет закрыть окно?
+			if (event.type == Event::Closed)
+				// тогда закрываем его
+				window.close();
+
+
+			//pooh impl-->
+
+			
+
+		}
+
+	//	while (cmd != EExit)
+
+	//	{
+			cmd = getCmd(); // Неблокирующее получение команды
+
+
+			//this_thread::sleep_for(std::chrono::milliseconds(500));
+
+
+			enginePower = enginePowerPercent * (500. / 100.);
+
+			m = Pooh.getBearMass();
+
+			h = h0 + v0 + a * dt*dt / 2;
+			v = v0 + a * dt;
+
+			if (h < hZad)
+			{
+				if (abs(enginePower - 9.8*m) < 0.0001)
+				{
+					a = 0;
+				}
+				else
+				{
+					a = (enginePower - 9.8*m) / m; // m * a = mg - F
+				}
+
+				h0 = h;
+
+			}
+			else if (h > hZad)
+			{
+				//h0 = hZad;
+				a = (enginePower + 9.8*m) / m; // m * a = mg - F
+				//a = -m*9.8; // m * a = mg - F
+				check = 1;
+			}
+
+			//h0 = h;
+			v0 = v;
+
+
+			if (abs(h - duplo_h) < 1.2)
+			{
+				Pooh.EatHoney();
+				cout << "Bear mass: " << Pooh.getBearMass();
+
+			}
+
+
+			if (t > 130)
+			{
+				hZad = 0;
+			}
+			else
+			{
+				hZad = getHZadFromUser(); // Неблокирующая функция для получения высоты
+			}
+
+
+			if (check && h < 0.01)
+			{
+				h = 0;
+				break;
+			}
+
+			enginePowerPercent = pid.calculate(hZad, h);
+
+			t = t + dt;
+
+			cout << "H: " << h << "  time: " << t << "	a: " << a << "	V: " << v << "  enginePower: " << enginePower << endl;
+
+			//pooh impl end <--
+
+			this_thread::sleep_for(std::chrono::milliseconds(10));
+
+	//	}
+			cout << "Input number of pooh'ov and number of trees" << endl;
+			int PoohNum;
+			int TreeNum;
+			cin >> Poohnum;
+
+			window.clear(Color(175, 180, 240, 0));	// Отрисовка окна
+
+			OtrisovPooh (PoohNum);
+
+			OtrisovTree (TreeNum);
+
+			OtrisovGND();
+
+			OtrisovTxt();
+
+			circle.move(x, y-h*10.0);
+			window.draw(circle);
+
+
+			strH = "Hight: " + to_string(h);
+
+			txtH.setFont(font);
+			// позиция текста
+			txtH.setPosition(30, 850);
+			// помещаем текст 
+			txtH.setString(strH);
+			// size of a text
+			txtH.setCharacterSize(25);
+			// жирный текст
+			txtH.setStyle(Text::Bold);
+			// отрисовка текста
+			window.draw(txtH);
+			
+
+			// Отрисовка окна	
+
+			window.display();
+
+		
+
+
+	}
+
+	this_thread::sleep_for(std::chrono::milliseconds(2500));
+
+	return 0;
+	
